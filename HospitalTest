@@ -1,0 +1,50 @@
+package Hospital;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.server.handler.FindElement;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class Test {
+	
+
+		public static void main(String[] args) throws InterruptedException {
+			// TODO Auto-generated method stub
+			WebDriver driver = new ChromeDriver();
+			WebDriverWait wait=new WebDriverWait(driver,30);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.get("https://demo.openemr.io/d/openemr");
+			driver.findElement(By.id("authUser")).sendKeys("admin");
+			driver.findElement(By.id("clearPass")).sendKeys("pass");
+			driver.findElement(By.xpath("//button[@class='btn btn-default btn-lg']")).click();
+
+Actions act=new Actions(driver);
+		act.moveToElement(driver.findElement(By.xpath("(//div[@class='menuSection'])[1]"))).build().perform();
+		driver.findElement(By.xpath("//div[text()='New/Search']")).click();
+driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@name='pat']")));
+driver.findElement(By.name("form_fname")).sendKeys("Pooja");
+driver.findElement(By.id("form_lname")).sendKeys("Patil");
+driver.findElement(By.id("form_DOB")).sendKeys("2019-04-17");
+Select sex=new Select(driver.findElement(By.id("form_sex")));
+sex.selectByValue("Female");
+driver.findElement(By.xpath("//button[@class='btn btn-default btn-save']")).click();
+driver.switchTo().defaultContent();
+driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@class='embed-responsive-item modalIframe']")));
+driver.findElement(By.xpath("//input[@value='Confirm Create New Patient']")).click();
+Thread.sleep(3000);
+driver.switchTo().alert().accept();
+driver.findElement(By.xpath("//div[@class='closeDlgIframe']")).click();
+
+//Actions act1=new Actions(driver);
+act.moveToElement(driver.findElement(By.xpath("//span[text()='Billy']"))).build().perform();
+driver.findElement(By.xpath("//ul//li[text()='Logout']")).click();
+
+		
+}
+}
